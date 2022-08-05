@@ -5,6 +5,7 @@ import akka.actor.typed.ActorSystem
 import akka.management.cluster.bootstrap.ClusterBootstrap
 import akka.management.scaladsl.AkkaManagement
 import org.slf4j.LoggerFactory
+import shopping.cart.actor.ShoppingCartActor
 import shopping.cart.service.ShoppingCartServiceImpl
 
 import scala.util.control.NonFatal
@@ -33,9 +34,9 @@ object Main {
     val grpcPort =
       system.settings.config.getInt("shopping-cart-service.grpc.port")
 
-    val grpcService = new ShoppingCartServiceImpl()
+    val grpcService = new ShoppingCartServiceImpl(system)
+    ShoppingCartActor.init(system)
     Server.start(grpcInterface, grpcPort)(grpcService)
-
   }
 
 }

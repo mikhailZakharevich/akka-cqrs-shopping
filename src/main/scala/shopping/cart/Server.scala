@@ -4,10 +4,9 @@ import akka.actor.typed.ActorSystem
 import akka.grpc.scaladsl.{ServerReflection, ServiceHandler}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
-import shopping.cart.proto
 
 import scala.concurrent.duration._
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.util.{Failure, Success}
 
 object Server {
@@ -15,7 +14,7 @@ object Server {
   def start(interface: String, port: Int)
            (grpcService: proto.ShoppingCartService)
            (implicit system: ActorSystem[_]): Unit = {
-    implicit val ex = system.executionContext
+    implicit val ex: ExecutionContextExecutor = system.executionContext
 
     val service: HttpRequest => Future[HttpResponse] =
       ServiceHandler.concatOrNotFound(

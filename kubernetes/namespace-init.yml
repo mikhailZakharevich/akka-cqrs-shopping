@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shopping
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: shopping-sa
+  namespace: shopping
